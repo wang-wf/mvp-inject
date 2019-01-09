@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+
+    defaultConfig {
+        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(TARGET_SDK_VERSION)
+        versionCode Integer.parseInt(VERSION_CODE)
+        versionName VERSION_NAME
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
+    implementation project(":mvp_core")
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    androidTestImplementation "com.android.support.test:runner:$RUNNER_VERSION"
+}
+
+//--------- 我是傲娇的分割线，下面是控制生成jar包的脚本 ---------
+
+def fileName = "mvp-inject-" + VERSION_NAME + ".jar"
+
+//生成jar包，调用原有功能打包，然后复制到指定目录并重命名
+task makeJar(dependsOn:['createFullJarRelease'], type: Copy) {
+//    dependsOn 'createFullJarRelease'  //也可以用这句话
+    delete 'build/' + fileName
+    from 'build/intermediates/full_jar/release/createFullJarRelease/'
+    into 'build/'
+    include 'full.jar'
+    rename ('full.jar', fileName)
+}
+
+//生成混淆过后的jar包
+task makeJarWithProguard(dependsOn:['makeJar'], type: proguard.gradle.ProGuardTask) {
+    delete 'build/p_' + fileName
+    injars 'build/' + fileName
+    outjars 'build/p_' + fileName
+
+    configuration 'proguard-rules.pro'
+}
