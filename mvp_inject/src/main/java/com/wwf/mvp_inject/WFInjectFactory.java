@@ -1,12 +1,8 @@
 package com.wwf.mvp_inject;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-
 import com.wwf.mvp_core.BaseModel;
 import com.wwf.mvp_core.BasePresenter;
 import com.wwf.mvp_core.BaseView;
-import com.wwf.mvp_core.WFLayoutRes;
 
 import java.lang.reflect.Constructor;
 
@@ -15,16 +11,22 @@ import java.lang.reflect.Constructor;
  * create by wenfeng.wang on 2018/12/29
  */
 public final class WFInjectFactory {
-    private MVPActivity activity;
+    private BaseView activity;
 
-    public WFInjectFactory(MVPActivity activity) {
+    public WFInjectFactory(BaseView activity) {
         this.activity = activity;
     }
 
+//    /** 从注解中取到layoutId，并使用DataBinding框架初始化，返回ViewDataBinding */
+//    public <T extends ViewDataBinding> T createDataBinding() {
+//        WFLayout layoutRes = activity.getClass().getAnnotation(WFLayout.class);
+//        return null == layoutRes ? null : (T) DataBindingUtil.setContentView(activity, layoutRes.id());
+//    }
+
     /** 从注解中取到layoutId，并使用DataBinding框架初始化，返回ViewDataBinding */
-    public <T extends ViewDataBinding> T createDataBinding() {
-        WFLayoutRes layoutRes = activity.getClass().getAnnotation(WFLayoutRes.class);
-        return null == layoutRes ? null : (T) DataBindingUtil.setContentView(activity, layoutRes.id());
+    public int createLayout() {
+        WFLayout layoutRes = activity.getClass().getAnnotation(WFLayout.class);
+        return null == layoutRes ? 0 : layoutRes.id();
     }
 
     /**

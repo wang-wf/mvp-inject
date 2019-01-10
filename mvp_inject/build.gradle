@@ -34,7 +34,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.android.support:appcompat-v7:$SUPPORT_LIB_VERSION"
-    implementation project(":mvp_core")
+    implementation "io.github.wang-wf:mvp-core:$VERSION_NAME"
+
     testImplementation "junit:junit:$JUNIT_VERSION"
     androidTestImplementation "com.android.support.test:runner:$RUNNER_VERSION"
 }

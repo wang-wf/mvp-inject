@@ -1,1 +1,1 @@
-include ':mvp_core'
+include ':mvp_inject'
