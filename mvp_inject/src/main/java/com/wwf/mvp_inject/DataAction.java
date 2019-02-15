@@ -1,6 +1,6 @@
 package com.wwf.mvp_inject;
 
-import com.wwf.mvp_core.MVPActivity;
+import android.support.annotation.NonNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,15 +8,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 将此注解用在activity上，会在实例化时在父类{@link MVPActivity}的onCreate中获取，
+ * 将此注解用在view层中供presenter调用的方法上，声明对应的onData中的action
  * 根据此注解中的class实例化presenter。
  * create by wenfeng.wang on 2018/12/29
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WFLayout {
+public @interface DataAction {
 
-    /** 当前activity对应的presenter的字节码 */
-    int value() default 0;
+    /** 当前方法对应的onData action */
+    @NonNull String value();
 }
 

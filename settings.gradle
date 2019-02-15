@@ -1,1 +1,1 @@
-include ':mvp_inject'
+include ':mvp_inject', ':appdemo'

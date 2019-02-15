@@ -2,19 +2,17 @@ package com.wwf.mvp_inject;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.wwf.mvp_core.BasePresenter;
-import com.wwf.mvp_core.BaseView;
 import com.wwf.mvp_core.MVPActivity;
 
 /**
- * 让activity继承自此类，可使用注解{@link WFView}，声明对应的presenter，无需手动实例化。
+ * 让activity继承自此类，可使用注解{@link WFLayout}，声明对应的resId，无需手动setContentView
  * Created by Administrator on 2018/11/19
  */
-public class CrudActivity<D extends ViewDataBinding, P extends BasePresenter> extends MVPActivity<D, P> {
+public abstract class CrudActivity<D extends ViewDataBinding, P extends BasePresenter> extends MVPActivity<D, P> {
     private WFInjectFactory mInjectFactory;
 
     @Override
@@ -32,5 +30,10 @@ public class CrudActivity<D extends ViewDataBinding, P extends BasePresenter> ex
     @Override
     public P createPresenter() {
         return (P)mInjectFactory.createPresenter();
+    }
+
+    @Override
+    public void onData(@NonNull String s, @NonNull Object... object) {
+        //因为框架中实现了基于方法注解的事件分发，可以放弃这个接口了，如果需要在框架外实现，由子类重载此方法做具体实现。
     }
 }
